@@ -1,0 +1,113 @@
+body
+{
+    margin: 0;
+    padding: 0;
+}
+
+body,
+input,
+button
+{
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 14px;
+}
+
+#main
+{
+    margin: 20px;
+
+    text-align: center;
+}
+
+.title
+{
+    font-size: 18px;
+
+    display: block;
+
+    margin-bottom: 10px;
+}
+
+.add-wrapper
+{
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+/* Form */
+.add
+{
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+}
+
+.add-input,
+.elm-datepicker--input
+{
+    width: 200px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+
+    border: solid 1px #ccc;
+}
+
+.elm-datepicker--container
+{
+    display: inline-block;
+}
+
+.add-button
+{
+    padding: 5px;
+
+    cursor: pointer;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    background: #fff;
+
+    align-self: center;
+}
+
+.add-button:not[disabled]:hover
+{
+    background: #eee;
+}
+
+.add-button[disabled]
+{
+    cursor: default;
+
+    color: #aaa;
+}
+
+/*timer*/
+.timer
+{
+    display: inline-block;
+
+    padding: 10px 20px;
+
+    text-align: center;
+
+    border: solid 1px #ccc;
+    box-shadow: 5px 5px 10px #a0a0a0;
+}
+
+
+.timer__name
+{
+    font-size: 18px;
+}
+
+.timer__left
+{
+    font-size: 18px;
+    font-weight: bold;
+}
