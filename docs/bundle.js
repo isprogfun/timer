@@ -11132,14 +11132,17 @@
 				A2(
 				_evancz$url_parser$UrlParser$format,
 				_isprogfun$timer$Types$FormPage,
-				_evancz$url_parser$UrlParser$s('')),
+				_evancz$url_parser$UrlParser$s('timer')),
 				A2(
 				_evancz$url_parser$UrlParser$format,
 				_isprogfun$timer$Types$TimerPage,
 				A2(
 					_evancz$url_parser$UrlParser_ops['</>'],
-					_evancz$url_parser$UrlParser$s('timers'),
-					_evancz$url_parser$UrlParser$string))
+					_evancz$url_parser$UrlParser$s('timer'),
+					A2(
+						_evancz$url_parser$UrlParser_ops['</>'],
+						_evancz$url_parser$UrlParser$s('timers'),
+						_evancz$url_parser$UrlParser$string)))
 			]));
 	var _isprogfun$timer$Routing$hashParser = function (location) {
 		return A3(
@@ -11387,7 +11390,7 @@
 						ctor: '_Tuple2',
 						_0: model,
 						_1: _elm_lang$navigation$Navigation$newUrl(
-							A2(_elm_lang$core$Basics_ops['++'], '/timers/', _p3._0))
+							A2(_elm_lang$core$Basics_ops['++'], '/timer/timers/', _p3._0))
 					};
 				case 'SaveTimerFail':
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};

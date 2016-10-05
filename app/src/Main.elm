@@ -159,7 +159,7 @@ update msg model =
             ( model, saveTimer model )
 
         SaveTimerSuccess id ->
-            ( model, Navigation.newUrl ("/timers/" ++ id) )
+            ( model, Navigation.newUrl ("/timer/timers/" ++ id) )
 
         SaveTimerFail error ->
             ( model, Cmd.none )
