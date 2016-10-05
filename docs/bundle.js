@@ -11304,7 +11304,7 @@
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'date', _elm_lang$core$Json_Decode$float),
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string));
 	var _isprogfun$timer$Main$getTimer = function (id) {
-		var url = A2(_elm_lang$core$Basics_ops['++'], 'http://localhost:3001/timers/', id);
+		var url = A2(_elm_lang$core$Basics_ops['++'], 'https://isprogfun.ru/api/timer/timers/', id);
 		return A3(
 			_elm_lang$core$Task$perform,
 			_isprogfun$timer$Types$GetTimerFail,
@@ -11342,7 +11342,7 @@
 							_1: _elm_lang$core$Json_Encode$string(_p2.url)
 						}
 						]))));
-		var url = 'http://localhost:3001/timers/create';
+		var url = 'https://isprogfun.ru/api/timer/timers/create';
 		return A3(
 			_elm_lang$core$Task$perform,
 			_isprogfun$timer$Types$SaveTimerFail,

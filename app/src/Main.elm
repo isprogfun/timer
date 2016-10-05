@@ -206,7 +206,7 @@ saveTimer : Model -> Cmd Msg
 saveTimer ({ form } as model) =
     let
         url =
-            "http://localhost:3001/timers/create"
+            "https://isprogfun.ru/api/timer/timers/create"
 
         body =
             Json.Encode.encode 0
@@ -234,7 +234,7 @@ getTimer : String -> Cmd Msg
 getTimer id =
     let
         url =
-            "http://localhost:3001/timers/" ++ id
+            "https://isprogfun.ru/api/timer/timers/" ++ id
     in
         Task.perform GetTimerFail GetTimerSuccess (Http.get decodeTimerJson url)
 
