@@ -5,15 +5,10 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html.App
 import String
-import Date exposing (Date, Day(..), day, dayOfWeek, month, year)
-
-
--- Libs
-
 import DatePicker
 
 
--- APP
+-- App
 
 import Types exposing (..)
 

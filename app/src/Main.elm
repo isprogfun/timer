@@ -4,7 +4,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
 import Task
-import Debug
 import Json.Decode exposing ((:=))
 import Json.Encode
 import Navigation
@@ -13,7 +12,7 @@ import Date exposing (Date, Day(..), day, dayOfWeek, month, year)
 import DatePicker exposing (defaultSettings)
 
 
--- App imports
+-- App
 
 import Routing
 import Timer.Timer
@@ -45,8 +44,7 @@ init : Flags -> Result String Route -> ( Model, Cmd Msg )
 init flags result =
     let
         route =
-            Routing.routeFromResult
-                result
+            Routing.routeFromResult result
 
         isDisabled date =
             Date.toTime date < flags.now
@@ -201,7 +199,7 @@ update msg model =
 
 
 
--- Form
+-- Form functions
 
 
 saveTimer : Model -> Cmd Msg
@@ -232,7 +230,7 @@ decodeJson =
 
 
 
--- Timer
+-- Timer functions
 
 
 getTimer : String -> String -> Cmd Msg

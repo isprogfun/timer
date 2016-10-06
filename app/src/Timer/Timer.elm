@@ -5,6 +5,9 @@ import Html.Attributes exposing (..)
 import Date
 
 
+-- VIEW
+
+
 view model id =
     case model.timer of
         Nothing ->
