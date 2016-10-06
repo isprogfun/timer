@@ -34,10 +34,10 @@ matchers =
         -- format : formatter -> Parser formatter a -> Parser (a -> result) result
         -- So, Home and Timer returns after parse (Home will be just value of type Route)
         -- TimerPage will be function of type Route that takes String (the result of our parse)
-        [ UrlParser.format TimerPage (UrlParser.s "timer" </> UrlParser.s "timers" </> UrlParser.string)
-          -- "#timer/timers/{id}"
-        , UrlParser.format FormPage (UrlParser.s "timer")
-          -- Just "#timer/"
+        [ UrlParser.format TimerPage (UrlParser.s "timers" </> UrlParser.string)
+          -- "timer/#timers/timers/{id}"
+        , UrlParser.format FormPage (UrlParser.s "")
+          -- Just "/"
         ]
 
 
