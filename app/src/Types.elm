@@ -14,6 +14,7 @@ type alias Model =
     , currentTime : Time
     , form : Timer
     , timer : Maybe Timer
+    , apiUrl : String
     }
 
 
@@ -26,6 +27,7 @@ type alias Timer =
 
 type alias Flags =
     { now : Float
+    , apiUrl : String
     }
 
 

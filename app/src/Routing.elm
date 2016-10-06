@@ -4,6 +4,7 @@ import String
 import Navigation
 import UrlParser exposing ((</>))
 import Types exposing (..)
+import Debug
 
 
 -- What is Result String Route
@@ -17,7 +18,8 @@ routeFromResult result =
             route
 
         Err message ->
-            NotFoundPage message
+            NotFoundPage
+                message
 
 
 
@@ -32,10 +34,10 @@ matchers =
         -- format : formatter -> Parser formatter a -> Parser (a -> result) result
         -- So, Home and Timer returns after parse (Home will be just value of type Route)
         -- TimerPage will be function of type Route that takes String (the result of our parse)
-        [ UrlParser.format FormPage (UrlParser.s "timer")
-          -- Just "/"
-        , UrlParser.format TimerPage (UrlParser.s "timer" </> UrlParser.s "timers" </> UrlParser.string)
-          -- "/timers/{id}"
+        [ UrlParser.format TimerPage (UrlParser.s "timer" </> UrlParser.s "timers" </> UrlParser.string)
+          -- "#timer/timers/{id}"
+        , UrlParser.format FormPage (UrlParser.s "timer")
+          -- Just "#timer/"
         ]
 
 
@@ -45,7 +47,7 @@ matchers =
 
 hashParser : Navigation.Location -> Result String Route
 hashParser location =
-    location.pathname
+    location.hash
         |> String.dropLeft 1
         -- UrlParser.parse : formatter -> Parser formatter a -> String -> Result String a
         -- identity is a formatter that does nothing, and it's here because we can't omit it

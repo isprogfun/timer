@@ -45,7 +45,8 @@ init : Flags -> Result String Route -> ( Model, Cmd Msg )
 init flags result =
     let
         route =
-            Routing.routeFromResult result
+            Routing.routeFromResult
+                result
 
         isDisabled date =
             Date.toTime date < flags.now
@@ -68,8 +69,9 @@ init flags result =
             , url = ""
             }
         , timer = Nothing
+        , apiUrl = flags.apiUrl
         }
-            ! [ Cmd.map ToDatePicker datePickerFx, initialCommand route ]
+            ! [ Cmd.map ToDatePicker datePickerFx, initialCommand flags.apiUrl route ]
 
 
 urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
@@ -91,11 +93,11 @@ urlUpdate result model =
                 }
     in
         { model | route = route, datePicker = datePicker }
-            ! [ Cmd.map ToDatePicker datePickerFx, initialCommand route ]
+            ! [ Cmd.map ToDatePicker datePickerFx, initialCommand model.apiUrl route ]
 
 
-initialCommand : Route -> Cmd Msg
-initialCommand route =
+initialCommand : String -> Route -> Cmd Msg
+initialCommand apiUrl route =
     case route of
         FormPage ->
             Cmd.none
@@ -104,7 +106,7 @@ initialCommand route =
             Cmd.none
 
         TimerPage id ->
-            getTimer id
+            getTimer apiUrl id
 
 
 
@@ -121,7 +123,7 @@ view model =
             Timer.Timer.view model id
 
         NotFoundPage message ->
-            div [] [ text "Page not found" ]
+            div [] [ text message ]
 
 
 
@@ -159,7 +161,7 @@ update msg model =
             ( model, saveTimer model )
 
         SaveTimerSuccess id ->
-            ( model, Navigation.newUrl ("/timer/timers/" ++ id) )
+            ( model, Navigation.newUrl ("#timer/timers/" ++ id) )
 
         SaveTimerFail error ->
             ( model, Cmd.none )
@@ -203,10 +205,13 @@ update msg model =
 
 
 saveTimer : Model -> Cmd Msg
-saveTimer ({ form } as model) =
+saveTimer model =
     let
+        form =
+            model.form
+
         url =
-            "https://isprogfun.ru/api/timer/timers/create"
+            model.apiUrl ++ "/timers/create"
 
         body =
             Json.Encode.encode 0
@@ -230,11 +235,11 @@ decodeJson =
 -- Timer
 
 
-getTimer : String -> Cmd Msg
-getTimer id =
+getTimer : String -> String -> Cmd Msg
+getTimer apiUrl id =
     let
         url =
-            "https://isprogfun.ru/api/timer/timers/" ++ id
+            apiUrl ++ "/timers/" ++ id
     in
         Task.perform GetTimerFail GetTimerSuccess (Http.get decodeTimerJson url)
 

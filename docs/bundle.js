@@ -52,8 +52,15 @@
 
 	var Elm = __webpack_require__(8);
 
+	var apiUrl = 'https://isprogfun.ru/api/timer';
+
+	if (location.hostname === 'localhost') {
+	    apiUrl = 'http://localhost:4760/api/timer';
+	}
+
 	Elm.Main.embed(document.getElementById('main'), {
-	    now: Date.now()
+	    now: Date.now(),
+	    apiUrl: apiUrl
 	});
 
 
@@ -10990,17 +10997,18 @@
 					}));
 		});
 
-	var _isprogfun$timer$Types$Model = F5(
-		function (a, b, c, d, e) {
-			return {route: a, datePicker: b, currentTime: c, form: d, timer: e};
+	var _isprogfun$timer$Types$Model = F6(
+		function (a, b, c, d, e, f) {
+			return {route: a, datePicker: b, currentTime: c, form: d, timer: e, apiUrl: f};
 		});
 	var _isprogfun$timer$Types$Timer = F3(
 		function (a, b, c) {
 			return {name: a, date: b, url: c};
 		});
-	var _isprogfun$timer$Types$Flags = function (a) {
-		return {now: a};
-	};
+	var _isprogfun$timer$Types$Flags = F2(
+		function (a, b) {
+			return {now: a, apiUrl: b};
+		});
 	var _isprogfun$timer$Types$ToDatePicker = function (a) {
 		return {ctor: 'ToDatePicker', _0: a};
 	};
@@ -11131,10 +11139,6 @@
 			[
 				A2(
 				_evancz$url_parser$UrlParser$format,
-				_isprogfun$timer$Types$FormPage,
-				_evancz$url_parser$UrlParser$s('timer')),
-				A2(
-				_evancz$url_parser$UrlParser$format,
 				_isprogfun$timer$Types$TimerPage,
 				A2(
 					_evancz$url_parser$UrlParser_ops['</>'],
@@ -11142,14 +11146,18 @@
 					A2(
 						_evancz$url_parser$UrlParser_ops['</>'],
 						_evancz$url_parser$UrlParser$s('timers'),
-						_evancz$url_parser$UrlParser$string)))
+						_evancz$url_parser$UrlParser$string))),
+				A2(
+				_evancz$url_parser$UrlParser$format,
+				_isprogfun$timer$Types$FormPage,
+				_evancz$url_parser$UrlParser$s('timer'))
 			]));
 	var _isprogfun$timer$Routing$hashParser = function (location) {
 		return A3(
 			_evancz$url_parser$UrlParser$parse,
 			_elm_lang$core$Basics$identity,
 			_isprogfun$timer$Routing$matchers,
-			A2(_elm_lang$core$String$dropLeft, 1, location.pathname));
+			A2(_elm_lang$core$String$dropLeft, 1, location.hash));
 	};
 	var _isprogfun$timer$Routing$parser = _elm_lang$navigation$Navigation$makeParser(_isprogfun$timer$Routing$hashParser);
 	var _isprogfun$timer$Routing$routeFromResult = function (result) {
@@ -11303,22 +11311,26 @@
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'date', _elm_lang$core$Json_Decode$float),
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string));
-	var _isprogfun$timer$Main$getTimer = function (id) {
-		var url = A2(_elm_lang$core$Basics_ops['++'], 'https://isprogfun.ru/api/timer/timers/', id);
-		return A3(
-			_elm_lang$core$Task$perform,
-			_isprogfun$timer$Types$GetTimerFail,
-			_isprogfun$timer$Types$GetTimerSuccess,
-			A2(_evancz$elm_http$Http$get, _isprogfun$timer$Main$decodeTimerJson, url));
-	};
+	var _isprogfun$timer$Main$getTimer = F2(
+		function (apiUrl, id) {
+			var url = A2(
+				_elm_lang$core$Basics_ops['++'],
+				apiUrl,
+				A2(_elm_lang$core$Basics_ops['++'], '/timers/', id));
+			return A3(
+				_elm_lang$core$Task$perform,
+				_isprogfun$timer$Types$GetTimerFail,
+				_isprogfun$timer$Types$GetTimerSuccess,
+				A2(_evancz$elm_http$Http$get, _isprogfun$timer$Main$decodeTimerJson, url));
+		});
 	var _isprogfun$timer$Main$decodeJson = A2(
 		_elm_lang$core$Json_Decode$at,
 		_elm_lang$core$Native_List.fromArray(
 			['id']),
 		_elm_lang$core$Json_Decode$string);
-	var _isprogfun$timer$Main$saveTimer = function (_p0) {
-		var _p1 = _p0;
-		var _p2 = _p1.form;
+	var _isprogfun$timer$Main$saveTimer = function (model) {
+		var url = A2(_elm_lang$core$Basics_ops['++'], model.apiUrl, '/timers/create');
+		var form = model.form;
 		var body = _evancz$elm_http$Http$string(
 			A2(
 				_elm_lang$core$Json_Encode$encode,
@@ -11329,20 +11341,19 @@
 							{
 							ctor: '_Tuple2',
 							_0: 'name',
-							_1: _elm_lang$core$Json_Encode$string(_p2.name)
+							_1: _elm_lang$core$Json_Encode$string(form.name)
 						},
 							{
 							ctor: '_Tuple2',
 							_0: 'date',
-							_1: _elm_lang$core$Json_Encode$float(_p2.date)
+							_1: _elm_lang$core$Json_Encode$float(form.date)
 						},
 							{
 							ctor: '_Tuple2',
 							_0: 'url',
-							_1: _elm_lang$core$Json_Encode$string(_p2.url)
+							_1: _elm_lang$core$Json_Encode$string(form.url)
 						}
 						]))));
-		var url = 'https://isprogfun.ru/api/timer/timers/create';
 		return A3(
 			_elm_lang$core$Task$perform,
 			_isprogfun$timer$Types$SaveTimerFail,
@@ -11351,8 +11362,8 @@
 	};
 	var _isprogfun$timer$Main$update = F2(
 		function (msg, model) {
-			var _p3 = msg;
-			switch (_p3.ctor) {
+			var _p0 = msg;
+			switch (_p0.ctor) {
 				case 'SetName':
 					var form = model.form;
 					return {
@@ -11362,7 +11373,7 @@
 							{
 								form: _elm_lang$core$Native_Utils.update(
 									form,
-									{name: _p3._0})
+									{name: _p0._0})
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -11375,7 +11386,7 @@
 							{
 								form: _elm_lang$core$Native_Utils.update(
 									form,
-									{url: _p3._0})
+									{url: _p0._0})
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -11390,7 +11401,7 @@
 						ctor: '_Tuple2',
 						_0: model,
 						_1: _elm_lang$navigation$Navigation$newUrl(
-							A2(_elm_lang$core$Basics_ops['++'], '/timer/timers/', _p3._0))
+							A2(_elm_lang$core$Basics_ops['++'], '#timer/timers/', _p0._0))
 					};
 				case 'SaveTimerFail':
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -11399,7 +11410,7 @@
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{currentTime: _p3._0}),
+							{currentTime: _p0._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				case 'GetTimerSuccess':
@@ -11408,7 +11419,7 @@
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								timer: _elm_lang$core$Maybe$Just(_p3._0)
+								timer: _elm_lang$core$Maybe$Just(_p0._0)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -11424,16 +11435,16 @@
 					};
 				default:
 					var form = model.form;
-					var _p4 = A2(_Bogdanp$elm_datepicker$DatePicker$update, _p3._0, model.datePicker);
-					var datePicker = _p4._0;
-					var datePickerFx = _p4._1;
-					var mDate = _p4._2;
+					var _p1 = A2(_Bogdanp$elm_datepicker$DatePicker$update, _p0._0, model.datePicker);
+					var datePicker = _p1._0;
+					var datePickerFx = _p1._1;
+					var mDate = _p1._2;
 					var date = function () {
-						var _p5 = mDate;
-						if (_p5.ctor === 'Nothing') {
+						var _p2 = mDate;
+						if (_p2.ctor === 'Nothing') {
 							return form.date;
 						} else {
-							return _elm_lang$core$Date$toTime(_p5._0);
+							return _elm_lang$core$Date$toTime(_p2._0);
 						}
 					}();
 					return A2(
@@ -11456,12 +11467,12 @@
 		return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$second, _isprogfun$timer$Types$Tick);
 	};
 	var _isprogfun$timer$Main$view = function (model) {
-		var _p6 = model.route;
-		switch (_p6.ctor) {
+		var _p3 = model.route;
+		switch (_p3.ctor) {
 			case 'FormPage':
 				return _isprogfun$timer$Form_Form$view(model);
 			case 'TimerPage':
-				return A2(_isprogfun$timer$Timer_Timer$view, model, _p6._0);
+				return A2(_isprogfun$timer$Timer_Timer$view, model, _p3._0);
 			default:
 				return A2(
 					_elm_lang$html$Html$div,
@@ -11469,21 +11480,22 @@
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html$text('Page not found')
+							_elm_lang$html$Html$text(_p3._0)
 						]));
 		}
 	};
-	var _isprogfun$timer$Main$initialCommand = function (route) {
-		var _p7 = route;
-		switch (_p7.ctor) {
-			case 'FormPage':
-				return _elm_lang$core$Platform_Cmd$none;
-			case 'NotFoundPage':
-				return _elm_lang$core$Platform_Cmd$none;
-			default:
-				return _isprogfun$timer$Main$getTimer(_p7._0);
-		}
-	};
+	var _isprogfun$timer$Main$initialCommand = F2(
+		function (apiUrl, route) {
+			var _p4 = route;
+			switch (_p4.ctor) {
+				case 'FormPage':
+					return _elm_lang$core$Platform_Cmd$none;
+				case 'NotFoundPage':
+					return _elm_lang$core$Platform_Cmd$none;
+				default:
+					return A2(_isprogfun$timer$Main$getTimer, apiUrl, _p4._0);
+			}
+		});
 	var _isprogfun$timer$Main$urlUpdate = F2(
 		function (result, model) {
 			var isDisabled = function (date) {
@@ -11491,12 +11503,12 @@
 					_elm_lang$core$Date$toTime(date),
 					model.currentTime) < 0;
 			};
-			var _p8 = _Bogdanp$elm_datepicker$DatePicker$init(
+			var _p5 = _Bogdanp$elm_datepicker$DatePicker$init(
 				_elm_lang$core$Native_Utils.update(
 					_Bogdanp$elm_datepicker$DatePicker$defaultSettings,
 					{firstDayOfWeek: _elm_lang$core$Date$Mon, isDisabled: isDisabled, placeholder: 'Choose a date'}));
-			var datePicker = _p8._0;
-			var datePickerFx = _p8._1;
+			var datePicker = _p5._0;
+			var datePickerFx = _p5._1;
 			var route = _isprogfun$timer$Routing$routeFromResult(result);
 			return A2(
 				_elm_lang$core$Platform_Cmd_ops['!'],
@@ -11506,7 +11518,7 @@
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(_elm_lang$core$Platform_Cmd$map, _isprogfun$timer$Types$ToDatePicker, datePickerFx),
-						_isprogfun$timer$Main$initialCommand(route)
+						A2(_isprogfun$timer$Main$initialCommand, model.apiUrl, route)
 					]));
 		});
 	var _isprogfun$timer$Main$init = F2(
@@ -11516,12 +11528,12 @@
 					_elm_lang$core$Date$toTime(date),
 					flags.now) < 0;
 			};
-			var _p9 = _Bogdanp$elm_datepicker$DatePicker$init(
+			var _p6 = _Bogdanp$elm_datepicker$DatePicker$init(
 				_elm_lang$core$Native_Utils.update(
 					_Bogdanp$elm_datepicker$DatePicker$defaultSettings,
 					{firstDayOfWeek: _elm_lang$core$Date$Mon, isDisabled: isDisabled, placeholder: 'Choose a date'}));
-			var datePicker = _p9._0;
-			var datePickerFx = _p9._1;
+			var datePicker = _p6._0;
+			var datePickerFx = _p6._1;
 			var route = _isprogfun$timer$Routing$routeFromResult(result);
 			return A2(
 				_elm_lang$core$Platform_Cmd_ops['!'],
@@ -11530,12 +11542,13 @@
 					datePicker: datePicker,
 					currentTime: 0,
 					form: {name: '', date: 0, url: ''},
-					timer: _elm_lang$core$Maybe$Nothing
+					timer: _elm_lang$core$Maybe$Nothing,
+					apiUrl: flags.apiUrl
 				},
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(_elm_lang$core$Platform_Cmd$map, _isprogfun$timer$Types$ToDatePicker, datePickerFx),
-						_isprogfun$timer$Main$initialCommand(route)
+						A2(_isprogfun$timer$Main$initialCommand, flags.apiUrl, route)
 					]));
 		});
 	var _isprogfun$timer$Main$main = {
@@ -11545,10 +11558,15 @@
 			{init: _isprogfun$timer$Main$init, urlUpdate: _isprogfun$timer$Main$urlUpdate, view: _isprogfun$timer$Main$view, update: _isprogfun$timer$Main$update, subscriptions: _isprogfun$timer$Main$subscriptions}),
 		flags: A2(
 			_elm_lang$core$Json_Decode$andThen,
-			A2(_elm_lang$core$Json_Decode_ops[':='], 'now', _elm_lang$core$Json_Decode$float),
-			function (now) {
-				return _elm_lang$core$Json_Decode$succeed(
-					{now: now});
+			A2(_elm_lang$core$Json_Decode_ops[':='], 'apiUrl', _elm_lang$core$Json_Decode$string),
+			function (apiUrl) {
+				return A2(
+					_elm_lang$core$Json_Decode$andThen,
+					A2(_elm_lang$core$Json_Decode_ops[':='], 'now', _elm_lang$core$Json_Decode$float),
+					function (now) {
+						return _elm_lang$core$Json_Decode$succeed(
+							{apiUrl: apiUrl, now: now});
+					});
 			})
 	};
 
