@@ -174,6 +174,9 @@ update msg model =
         GetTimerFail error ->
             ( { model | route = NotFoundPage "Timer not found" }, Cmd.none )
 
+        GoToForm ->
+            ( model, Navigation.newUrl ("#") )
+
         -- DatePicker
         ToDatePicker msg ->
             let

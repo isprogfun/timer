@@ -47,6 +47,7 @@ type
     | Tick Time
     | GetTimerSuccess Timer
     | GetTimerFail Http.Error
+    | GoToForm
       -- DatePicker
     | ToDatePicker DatePicker.Msg
 

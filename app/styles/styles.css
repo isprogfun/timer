@@ -100,7 +100,6 @@ button
     box-shadow: 5px 5px 10px #a0a0a0;
 }
 
-
 .timer__name
 {
     font-size: 18px;
@@ -110,4 +109,25 @@ button
 {
     font-size: 18px;
     font-weight: bold;
+}
+
+.timer__new
+{
+    font-style: italic;
+
+    position: absolute;
+    right: 20px;
+
+    padding: 5px 10px;
+
+    cursor: pointer;
+
+    border-radius: 3px;
+
+    background: #eee;
+}
+
+.timer__new:hover
+{
+    background: #edfff2;
 }
