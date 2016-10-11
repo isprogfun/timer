@@ -3,6 +3,7 @@ module Timer.Timer exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Date
+import Debug
 
 
 -- VIEW
@@ -55,7 +56,9 @@ view model id =
                         ]
                     , p [ class "timer__date" ] [ text (day ++ " " ++ month ++ " " ++ year) ]
                     , p [ class "timer__left" ]
-                        (if model.currentTime /= 0 then
+                        (if model.currentTime > timer.date then
+                            [ text "Event is over!" ]
+                         else if model.currentTime /= 0 then
                             [ (if yearsLeft /= 0 then
                                 toString yearsLeft ++ " years "
                                else
