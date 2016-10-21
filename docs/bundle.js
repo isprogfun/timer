@@ -11227,17 +11227,6 @@
 							_elm_lang$core$Native_List.fromArray(
 								[
 									A2(
-									_elm_lang$html$Html$div,
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html_Attributes$class('timer__new'),
-											_elm_lang$html$Html_Events$onClick(_isprogfun$timer$Types$GoToForm)
-										]),
-									_elm_lang$core$Native_List.fromArray(
-										[
-											_elm_lang$html$Html$text('Create new')
-										])),
-									A2(
 									_elm_lang$html$Html$p,
 									_elm_lang$core$Native_List.fromArray(
 										[

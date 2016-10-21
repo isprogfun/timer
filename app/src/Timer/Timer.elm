@@ -55,8 +55,8 @@ view model id =
                 div []
                     [ div
                         [ class "timer" ]
-                        [ div [ class "timer__new", onClick GoToForm ] [ text "Create new" ]
-                        , p [ class "timer__name" ]
+                        [ -- div [ class "timer__new", onClick GoToForm ] [ text "Create new" ]
+                          p [ class "timer__name" ]
                             [ if timer.url /= "" then
                                 a [ href timer.url, target "blank" ] [ text timer.name ]
                               else
