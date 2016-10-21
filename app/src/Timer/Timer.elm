@@ -53,10 +53,10 @@ view model id =
                     toFloat (round millisecondsLeft % (1000 * 60)) / (1000) |> floor
             in
                 div []
-                    [ div [ class "timer__new", onClick GoToForm ] [ text "Create new" ]
-                    , div
+                    [ div
                         [ class "timer" ]
-                        [ p [ class "timer__name" ]
+                        [ div [ class "timer__new", onClick GoToForm ] [ text "Create new" ]
+                        , p [ class "timer__name" ]
                             [ if timer.url /= "" then
                                 a [ href timer.url, target "blank" ] [ text timer.name ]
                               else

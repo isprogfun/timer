@@ -15,16 +15,13 @@ button
 #main
 {
     margin: 20px;
-
     text-align: center;
 }
 
 .title
 {
     font-size: 18px;
-
     display: block;
-
     margin-bottom: 10px;
 }
 
@@ -32,7 +29,6 @@ button
 {
     display: flex;
     flex-direction: column;
-
     align-items: center;
 }
 
@@ -41,7 +37,6 @@ button
 {
     display: flex;
     flex-direction: column;
-
     align-items: flex-start;
 }
 
@@ -52,8 +47,7 @@ button
     margin-right: 5px;
     margin-bottom: 10px;
     padding: 5px;
-
-    border: solid 1px #ccc;
+    border: solid 1px #689CD2;
 }
 
 .elm-datepicker--container
@@ -64,40 +58,36 @@ button
 .add-button
 {
     padding: 5px;
-
     cursor: pointer;
-
-    border: 1px solid #ccc;
+    border: 1px solid #689CD2;
     border-radius: 4px;
     outline: none;
-    background: #fff;
-
+    background: #689CD2;
     align-self: center;
+    color: #000;
 }
 
-.add-button:not[disabled]:hover
+.add-button:hover
 {
-    background: #eee;
+    background: #298cf3;
 }
 
 .add-button[disabled]
 {
     cursor: default;
-
-    color: #aaa;
+    opacity: 0.5;
+    background: #689CD2;
 }
 
 /*timer*/
 .timer
 {
+    position: relative;
     display: inline-block;
-
     padding: 10px 20px;
-
     text-align: center;
-
-    border: solid 1px #ccc;
-    box-shadow: 5px 5px 10px #a0a0a0;
+    border: solid 1px #689CD2;
+    box-shadow: 5px 5px 10px #dae2ff;
 }
 
 .timer__name
@@ -114,20 +104,17 @@ button
 .timer__new
 {
     font-style: italic;
-
     position: absolute;
     right: 20px;
-
     padding: 5px 10px;
-
     cursor: pointer;
-
-    border-radius: 3px;
-
-    background: #eee;
+    background: #dae2ff;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
 }
 
 .timer__new:hover
 {
-    background: #edfff2;
+    opacity: 1;
 }

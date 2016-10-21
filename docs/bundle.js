@@ -105,7 +105,7 @@
 
 
 	// module
-	exports.push([module.id, "body\n{\n    margin: 0;\n    padding: 0;\n}\n\nbody,\ninput,\nbutton\n{\n    font-family: 'Open Sans', Arial, sans-serif;\n    font-size: 14px;\n}\n\n#main\n{\n    margin: 20px;\n\n    text-align: center;\n}\n\n.title\n{\n    font-size: 18px;\n\n    display: block;\n\n    margin-bottom: 10px;\n}\n\n.add-wrapper\n{\n    display: flex;\n    flex-direction: column;\n\n    align-items: center;\n}\n\n/* Form */\n.add\n{\n    display: flex;\n    flex-direction: column;\n\n    align-items: flex-start;\n}\n\n.add-input,\n.elm-datepicker--input\n{\n    width: 200px;\n    margin-right: 5px;\n    margin-bottom: 10px;\n    padding: 5px;\n\n    border: solid 1px #ccc;\n}\n\n.elm-datepicker--container\n{\n    display: inline-block;\n}\n\n.add-button\n{\n    padding: 5px;\n\n    cursor: pointer;\n\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    outline: none;\n    background: #fff;\n\n    align-self: center;\n}\n\n.add-button:not[disabled]:hover\n{\n    background: #eee;\n}\n\n.add-button[disabled]\n{\n    cursor: default;\n\n    color: #aaa;\n}\n\n/*timer*/\n.timer\n{\n    display: inline-block;\n\n    padding: 10px 20px;\n\n    text-align: center;\n\n    border: solid 1px #ccc;\n    box-shadow: 5px 5px 10px #a0a0a0;\n}\n\n.timer__name\n{\n    font-size: 18px;\n}\n\n.timer__left\n{\n    font-size: 18px;\n    font-weight: bold;\n}\n\n.timer__new\n{\n    font-style: italic;\n\n    position: absolute;\n    right: 20px;\n\n    padding: 5px 10px;\n\n    cursor: pointer;\n\n    border-radius: 3px;\n\n    background: #eee;\n}\n\n.timer__new:hover\n{\n    background: #edfff2;\n}\n", ""]);
+	exports.push([module.id, "body\n{\n    margin: 0;\n    padding: 0;\n}\n\nbody,\ninput,\nbutton\n{\n    font-family: 'Open Sans', Arial, sans-serif;\n    font-size: 14px;\n}\n\n#main\n{\n    margin: 20px;\n    text-align: center;\n}\n\n.title\n{\n    font-size: 18px;\n    display: block;\n    margin-bottom: 10px;\n}\n\n.add-wrapper\n{\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n/* Form */\n.add\n{\n    display: flex;\n    flex-direction: column;\n    align-items: flex-start;\n}\n\n.add-input,\n.elm-datepicker--input\n{\n    width: 200px;\n    margin-right: 5px;\n    margin-bottom: 10px;\n    padding: 5px;\n    border: solid 1px #689CD2;\n}\n\n.elm-datepicker--container\n{\n    display: inline-block;\n}\n\n.add-button\n{\n    padding: 5px;\n    cursor: pointer;\n    border: 1px solid #689CD2;\n    border-radius: 4px;\n    outline: none;\n    background: #689CD2;\n    align-self: center;\n    color: #000;\n}\n\n.add-button:hover\n{\n    background: #298cf3;\n}\n\n.add-button[disabled]\n{\n    cursor: default;\n    opacity: 0.5;\n    background: #689CD2;\n}\n\n/*timer*/\n.timer\n{\n    position: relative;\n    display: inline-block;\n    padding: 10px 20px;\n    text-align: center;\n    border: solid 1px #689CD2;\n    box-shadow: 5px 5px 10px #dae2ff;\n}\n\n.timer__name\n{\n    font-size: 18px;\n}\n\n.timer__left\n{\n    font-size: 18px;\n    font-weight: bold;\n}\n\n.timer__new\n{\n    font-style: italic;\n    position: absolute;\n    right: 20px;\n    padding: 5px 10px;\n    cursor: pointer;\n    background: #dae2ff;\n    top: 0;\n    right: 0;\n    opacity: 0.5;\n}\n\n.timer__new:hover\n{\n    opacity: 1;\n}\n", ""]);
 
 	// exports
 
@@ -11222,21 +11222,21 @@
 							_elm_lang$html$Html$div,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html_Attributes$class('timer__new'),
-									_elm_lang$html$Html_Events$onClick(_isprogfun$timer$Types$GoToForm)
-								]),
-							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html$text('Create new')
-								])),
-							A2(
-							_elm_lang$html$Html$div,
-							_elm_lang$core$Native_List.fromArray(
-								[
 									_elm_lang$html$Html_Attributes$class('timer')
 								]),
 							_elm_lang$core$Native_List.fromArray(
 								[
+									A2(
+									_elm_lang$html$Html$div,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html_Attributes$class('timer__new'),
+											_elm_lang$html$Html_Events$onClick(_isprogfun$timer$Types$GoToForm)
+										]),
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_elm_lang$html$Html$text('Create new')
+										])),
 									A2(
 									_elm_lang$html$Html$p,
 									_elm_lang$core$Native_List.fromArray(
