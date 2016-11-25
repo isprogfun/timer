@@ -4,12 +4,13 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
 import Task
-import Json.Decode exposing ((:=))
+import Json.Decode
 import Json.Encode
 import Navigation
 import Time exposing (Time)
 import Date exposing (Date, Day(..), day, dayOfWeek, month, year)
 import DatePicker exposing (defaultSettings)
+import Debug
 
 
 -- App
@@ -23,13 +24,12 @@ import Types exposing (..)
 -- MAIN
 
 
-main : Program Flags
+main : Program Flags Model Msg
 main =
     -- The location goes through the parser function from Routing
     -- Result of the parser function will return some "data" that will be fed to init function
-    Navigation.programWithFlags Routing.parser
+    Navigation.programWithFlags OnLocationChange
         { init = init
-        , urlUpdate = urlUpdate
         , view = view
         , update = update
         , subscriptions = subscriptions
@@ -40,11 +40,11 @@ main =
 -- INIT
 
 
-init : Flags -> Result String Route -> ( Model, Cmd Msg )
-init flags result =
+init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
+init flags location =
     let
         route =
-            Routing.routeFromResult result
+            Routing.parseLocation location
 
         isDisabled date =
             Date.toTime date < flags.now
@@ -72,35 +72,13 @@ init flags result =
             ! [ Cmd.map ToDatePicker datePickerFx, initialCommand flags.apiUrl route ]
 
 
-urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
-urlUpdate result model =
-    let
-        route =
-            Routing.routeFromResult result
-
-        isDisabled date =
-            Date.toTime date < model.currentTime
-
-        ( datePicker, datePickerFx ) =
-            DatePicker.init
-                -- Changing some settings
-                { defaultSettings
-                    | firstDayOfWeek = Mon
-                    , isDisabled = isDisabled
-                    , placeholder = "Choose a date"
-                }
-    in
-        { model | route = route, datePicker = datePicker }
-            ! [ Cmd.map ToDatePicker datePickerFx, initialCommand model.apiUrl route ]
-
-
 initialCommand : String -> Route -> Cmd Msg
 initialCommand apiUrl route =
     case route of
         FormPage ->
             Cmd.none
 
-        NotFoundPage message ->
+        NotFoundPage ->
             Cmd.none
 
         TimerPage id ->
@@ -120,8 +98,8 @@ view model =
         TimerPage id ->
             Timer.Timer.view model id
 
-        NotFoundPage message ->
-            div [] [ text message ]
+        NotFoundPage ->
+            div [] [ text "404" ]
 
 
 
@@ -158,21 +136,21 @@ update msg model =
         SaveTimer ->
             ( model, saveTimer model )
 
-        SaveTimerSuccess id ->
+        SaveTimerAnswer (Ok id) ->
             ( model, Navigation.newUrl ("#timers/" ++ id) )
 
-        SaveTimerFail error ->
+        SaveTimerAnswer (Err _) ->
             ( model, Cmd.none )
 
         -- Timer
         Tick time ->
             ( { model | currentTime = time }, Cmd.none )
 
-        GetTimerSuccess timer ->
+        GetTimerAnswer (Ok timer) ->
             ( { model | timer = Just timer }, Cmd.none )
 
-        GetTimerFail error ->
-            ( { model | route = NotFoundPage "Timer not found" }, Cmd.none )
+        GetTimerAnswer (Err _) ->
+            ( { model | route = NotFoundPage }, Cmd.none )
 
         GoToForm ->
             ( model, Navigation.newUrl ("#") )
@@ -200,6 +178,27 @@ update msg model =
                 }
                     ! [ Cmd.map ToDatePicker datePickerFx ]
 
+        -- Location
+        OnLocationChange location ->
+            let
+                route =
+                    Routing.parseLocation location
+
+                isDisabled date =
+                    Date.toTime date < model.currentTime
+
+                ( datePicker, datePickerFx ) =
+                    DatePicker.init
+                        -- Changing some settings
+                        { defaultSettings
+                            | firstDayOfWeek = Mon
+                            , isDisabled = isDisabled
+                            , placeholder = "Choose a date"
+                        }
+            in
+                { model | route = route, datePicker = datePicker }
+                    ! [ Cmd.map ToDatePicker datePickerFx, initialCommand model.apiUrl route ]
+
 
 
 -- Form functions
@@ -208,23 +207,22 @@ update msg model =
 saveTimer : Model -> Cmd Msg
 saveTimer model =
     let
-        form =
-            model.form
-
         url =
             model.apiUrl ++ "/timers/create"
 
+        form =
+            model.form
+
         body =
-            Json.Encode.encode 0
-                (Json.Encode.object
-                    [ ( "name", Json.Encode.string form.name )
-                    , ( "date", Json.Encode.float form.date )
-                    , ( "url", Json.Encode.string form.url )
-                    ]
-                )
-                |> Http.string
+            Json.Encode.object
+                [ ( "name", Json.Encode.string form.name )
+                , ( "date", Json.Encode.float form.date )
+                , ( "url", Json.Encode.string form.url )
+                ]
+                |> Json.Encode.encode 0
+                |> Http.stringBody "text/plain"
     in
-        Task.perform SaveTimerFail SaveTimerSuccess (Http.post decodeJson url body)
+        Http.send SaveTimerAnswer <| Http.post url body decodeJson
 
 
 decodeJson : Json.Decode.Decoder String
@@ -242,12 +240,12 @@ getTimer apiUrl id =
         url =
             apiUrl ++ "/timers/" ++ id
     in
-        Task.perform GetTimerFail GetTimerSuccess (Http.get decodeTimerJson url)
+        Http.send GetTimerAnswer <| Http.get url decodeTimerJson
 
 
 decodeTimerJson : Json.Decode.Decoder Timer
 decodeTimerJson =
-    Json.Decode.object3 Timer
-        ("name" := Json.Decode.string)
-        ("date" := Json.Decode.float)
-        ("url" := Json.Decode.string)
+    Json.Decode.map3 Timer
+        (Json.Decode.at [ "name" ] Json.Decode.string)
+        (Json.Decode.at [ "date" ] Json.Decode.float)
+        (Json.Decode.at [ "url" ] Json.Decode.string)

@@ -3,7 +3,6 @@ module Form.Form exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.App
 import String
 import DatePicker
 
@@ -46,10 +45,10 @@ view model =
                     ]
                 , label
                     []
-                    [ DatePicker.view model.datePicker |> Html.App.map ToDatePicker, text "*" ]
+                    [ DatePicker.view model.datePicker |> Html.map ToDatePicker, text "*" ]
                 , button
                     [ class "add-button"
-                    , type' "submit"
+                    , type_ "submit"
                     , onClick SaveTimer
                     , disabled submitDisabled
                     ]

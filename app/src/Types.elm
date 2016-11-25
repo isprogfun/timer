@@ -3,6 +3,7 @@ module Types exposing (..)
 import Time exposing (Time)
 import Http
 import DatePicker
+import Navigation
 
 
 -- MODEL
@@ -41,15 +42,15 @@ type
     = SetName String
     | SetUrl String
     | SaveTimer
-    | SaveTimerSuccess String
-    | SaveTimerFail Http.Error
+    | SaveTimerAnswer (Result Http.Error String)
       -- Timer
     | Tick Time
-    | GetTimerSuccess Timer
-    | GetTimerFail Http.Error
+    | GetTimerAnswer (Result Http.Error Timer)
     | GoToForm
       -- DatePicker
     | ToDatePicker DatePicker.Msg
+      -- Location
+    | OnLocationChange Navigation.Location
 
 
 
@@ -59,4 +60,4 @@ type
 type Route
     = FormPage
     | TimerPage String
-    | NotFoundPage String
+    | NotFoundPage
