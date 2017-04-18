@@ -9,6 +9,7 @@
     "webpack-dev-server": "^1.15.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --port 3000"
+    "start": "webpack-dev-server --port 3000",
+    "build": "webpack -p"
   }
 }

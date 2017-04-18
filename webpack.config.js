@@ -21,7 +21,7 @@ module.exports = {
                 loader: 'file?name=[name].[ext]'
             },
             {
-                test: /\.(css|scss)$/,
+                test: /\.css$/,
                 loaders: [
                     'style-loader',
                     'css-loader'
@@ -32,7 +32,6 @@ module.exports = {
 
     devServer: {
         inline: true,
-        // historyApiFallback: true,
         stats: { colors: true }
     }
 };
